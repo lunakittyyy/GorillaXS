@@ -25,6 +25,14 @@ namespace GorillaXS
 
     public static class Notifier
     {
+        /// <summary>
+        /// Send a notification to XSOverlay via WebSockets.
+        /// </summary>
+        /// <param name="title">Title displayed above the notification. Required</param>
+        /// <param name="content">Main body of the notification. Required</param>
+        /// <param name="height">Height of the notification</param>
+        /// <param name="timeout">Time before the notification disappears</param>
+        /// <param name="Base64Icon">Icon data in Base64. If not defined a bell icon will be used</param>
         public static void Notify(string title, string content, float height = 88, float timeout = 3, string Base64Icon = "")
         {
             XSONotificationObject notification = new XSONotificationObject();

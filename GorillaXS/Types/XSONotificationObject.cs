@@ -4,6 +4,9 @@ using System.Text;
 
 namespace GorillaXS.Types
 {
+    /// <summary>
+    /// Object containing parameters pertaining to the notification. This data is serialized into JSON and included in the API object.
+    /// </summary>
     public class XSONotificationObject
     {
         public int type = 1;

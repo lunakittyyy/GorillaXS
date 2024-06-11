@@ -4,6 +4,9 @@ using System.Text;
 
 namespace GorillaXS.Types
 {
+    /// <summary>
+    /// API object that is serialized into JSON. This is what gets sent to XSOverlay via WebSockets and contains a command.
+    /// </summary>
     internal class XSOApiObject
     {
         public string sender = null;
