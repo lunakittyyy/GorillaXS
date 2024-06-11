@@ -33,7 +33,7 @@ namespace GorillaXS
         /// <param name="height">Height of the notification</param>
         /// <param name="timeout">Time before the notification disappears</param>
         /// <param name="Base64Icon">Icon data in Base64. If not defined a bell icon will be used</param>
-        public static void Notify(string title, string content, float height = 88, float timeout = 3, string Base64Icon = "")
+        public static void Notify(string title, string content, float height = 88, float timeout = 3, string Base64Icon = "", string AudioPath = "default")
         {
             XSONotificationObject notification = new XSONotificationObject();
             notification.title = title;
@@ -46,6 +46,7 @@ namespace GorillaXS
             notification.timeout = timeout;
             notification.height = height;
             notification.sourceApp = "GorillaXS";
+            notification.audioPath = AudioPath;
 
             XSOApiObject apiObj = new XSOApiObject();
             apiObj.sender = "gorillaxs";

@@ -15,6 +15,7 @@ namespace GorillaXS.Types
         public float height = 175;
         public float opacity = 1;
         public float volume = 0.7f;
+        public string audioPath = "default";
         public string title = "";
         public string content = "";
         public bool useBase64Icon = false;
