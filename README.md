@@ -1,2 +1,2 @@
 # GorillaXS
-Websocket-based XSOverlay notifications for Gorilla Tag.
+Websocket-based XSOverlay notification library for Gorilla Tag.
