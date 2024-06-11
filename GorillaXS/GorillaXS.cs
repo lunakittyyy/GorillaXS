@@ -29,12 +29,6 @@ namespace GorillaXS
             webSocket = new WebSocket("ws://127.0.0.1:42070/?client=gorillaxs");
             webSocket.Connect();
 
-            roomNotifications = Config.Bind("Configuration", "Room Notifications", true, "When enabled, you will receive notifications based on room-related events.");
-            if (roomNotifications.Value)
-            {
-                gameObject.AddComponent<RoomNotifications>();
-            }
-
             PushNotification("Initialized", "GorillaXS active");
         }
 
