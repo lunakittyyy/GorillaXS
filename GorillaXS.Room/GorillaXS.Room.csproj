@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GorillaXS\GorillaXS.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
 	  <Reference Include="Assembly-CSharp">
 		  <HintPath>$(GameAssemblyPath)\Assembly-CSharp.dll</HintPath>
 	  </Reference>
