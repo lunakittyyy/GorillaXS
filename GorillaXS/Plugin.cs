@@ -21,6 +21,10 @@ namespace GorillaXS
             ws = new WebSocket("ws://127.0.0.1:42070/?client=gorillaxs");
             ws.Connect();
         }
+    }
+
+    public static class Notifier
+    {
         public static void Notify(string title, string content, float height = 88, float timeout = 3, string Base64Icon = "")
         {
             XSONotificationObject notification = new XSONotificationObject();
@@ -42,7 +46,7 @@ namespace GorillaXS
             apiObj.jsonData = JsonConvert.SerializeObject(notification);
             apiObj.rawData = null;
 
-            ws.Send(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(apiObj)));
+            XSPlugin.ws.Send(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(apiObj)));
         }
     }
 }
