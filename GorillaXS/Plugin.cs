@@ -9,29 +9,32 @@ namespace GorillaXS
 {
     [BepInDependency("org.legoandmars.gorillatag.utilla", "1.5.0")]
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
-    public class Plugin : BaseUnityPlugin
+    public class XSPlugin : BaseUnityPlugin
     {
         public static WebSocket ws;
+        public static XSPlugin instance;
         void Start() => Utilla.Events.GameInitialized += OnGameInitialized;
 
         void OnGameInitialized(object sender, EventArgs e)
         {
+            instance = this;
 
             ws = new WebSocket("ws://127.0.0.1:42070/?client=gorillaxs");
             ws.Connect();
-
-            gameObject.AddComponent<PUNNotifications>();
-            Notify("Initialized", "GorillaXS active");
         }
-
-        public static void Notify(string title, string content)
+        public static void Notify(string title, string content, float height = 88, float timeout = 3, string Base64Icon = "")
         {
             XSONotificationObject notification = new XSONotificationObject();
             notification.title = title;
             notification.content = content;
+            if (Base64Icon != "")
+            {
+                notification.useBase64Icon = true;
+                notification.icon = Base64Icon;
+            }
+            notification.timeout = timeout;
+            notification.height = height;
             notification.sourceApp = "GorillaXS";
-            notification.timeout = 3;
-            notification.height = 88;
 
             XSOApiObject apiObj = new XSOApiObject();
             apiObj.sender = "gorillaxs";
