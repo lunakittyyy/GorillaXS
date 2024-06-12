@@ -4,6 +4,7 @@ using System;
 using Newtonsoft.Json;
 using WebSocketSharp;
 using System.Text;
+using UnityEngine;
 
 namespace GorillaXS
 {
@@ -20,7 +21,7 @@ namespace GorillaXS
             GorillaTagger.OnPlayerSpawned(Initialize);
         }
 
-        private void Initialize()
+        public void Initialize()
         {
             webSocket = new WebSocket("ws://127.0.0.1:42070/?client=gorillaxs");
             webSocket.Connect();
@@ -36,8 +37,8 @@ namespace GorillaXS
         /// <param name="content">Main body of the notification. Required</param>
         /// <param name="height">Height of the notification</param>
         /// <param name="timeout">Time before the notification disappears</param>
-        /// <param name="Base64Icon">Icon data in Base64. If not defined a bell icon will be used</param>
-        public static void Notify(string title, string content, float height = 88, float timeout = 3, string Base64Icon = "", string AudioPath = "default")
+        /// <param name="icon">Name of icon or Base64. Can be "default", "error", "warning", or a Base64 encoded image</param>
+        public static void Notify(string title, string content, float height = 88, float timeout = 3, string icon = "", string AudioPath = "default")
         {
             XSONotificationObject notification = new XSONotificationObject
             {
@@ -49,10 +50,18 @@ namespace GorillaXS
                 audioPath = AudioPath
             };
 
-            if (!Base64Icon.IsNullOrEmpty())
+            if (icon == "default" || icon == "warning" || icon == "error")
+            {
+                notification.icon = icon;
+            }
+            else if (icon.IsNullOrWhiteSpace())
+            {
+                notification.icon = "default";
+            }
+            else
             {
                 notification.useBase64Icon = true;
-                notification.icon = Base64Icon;
+                notification.icon = icon;
             }
 
             XSOApiObject apiObj = new XSOApiObject()
@@ -63,8 +72,14 @@ namespace GorillaXS
                 jsonData = JsonConvert.SerializeObject(notification),
                 rawData = null
             };
-
-            XSPlugin.webSocket.Send(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(apiObj)));
+            try
+            {
+                XSPlugin.webSocket.Send(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(apiObj)));
+            } catch
+            {
+                Debug.LogError("Failed to send notification to XSOverlay, trying to re-establish WebSocket connection");
+                XSPlugin.Instance.Initialize();
+            }
         }
     }
 }
