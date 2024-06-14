@@ -2,10 +2,10 @@
 using GorillaXS.Types;
 using Newtonsoft.Json;
 using WebSocketSharp;
-using System.Text;
 using UnityEngine;
 using System;
 using System.IO;
+using BepInEx.Configuration;
 
 namespace GorillaXS
 {
@@ -15,6 +15,9 @@ namespace GorillaXS
         public static XSPlugin Instance;
 
         private WebSocket webSocket;
+
+        private string WebsocketUrl;
+        private ConfigEntry<int> WebsocketPort;
 
         public void Awake()
         {
@@ -26,6 +29,9 @@ namespace GorillaXS
 
         public void Initialize()
         {
+            WebsocketPort = Config.Bind("Websocket", "Port", 42070, "Port used to communicate with XSOverlay's websocket server. You should not need to change this unless you use a different websocket port in your XSOverlay config.");
+            WebsocketUrl = $"ws://127.0.0.1:{WebsocketPort.Value}/?client=gorillaxs";
+
             DefineWebSocket();
         }
 
@@ -34,7 +40,7 @@ namespace GorillaXS
         {
             if (IsWebSocketValid()) return; // ignore if we have a perfectly fine websocket !
 
-            webSocket = new WebSocket(Constants.WebsocketUrl);
+            webSocket = new WebSocket(WebsocketUrl);
             webSocket.Connect();
         }
 
@@ -70,7 +76,7 @@ namespace GorillaXS
 
             if (XSPlugin.Instance.IsWebSocketValid())
             {
-                XSPlugin.Instance.SendWebSocketBytes(Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(apiObj)));
+                XSPlugin.Instance.SendWebSocketBytes(System.Text.Encoding.ASCII.GetBytes(JsonConvert.SerializeObject(apiObj)));
             }
             else
             {
