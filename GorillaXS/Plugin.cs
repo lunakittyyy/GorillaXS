@@ -117,7 +117,7 @@ namespace GorillaXS
         }
     }
 
-    public static class Decoding
+    public static class Encoding
     {
         public static string ToBase64String(byte[] bytes) => Convert.ToBase64String(bytes);
 
