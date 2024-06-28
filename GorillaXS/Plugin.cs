@@ -6,6 +6,7 @@ using UnityEngine;
 using System;
 using System.IO;
 using BepInEx.Configuration;
+using UnityEngine.XR;
 
 namespace GorillaXS
 {
@@ -58,7 +59,7 @@ namespace GorillaXS
     {
         public static void Notify(XSONotificationObject notification)
         {
-            if (notification == null) return;
+            if (notification == null || !XRSettings.isDeviceActive) return;
             
             if (notification.sourceApp.IsNullOrEmpty())
             {
