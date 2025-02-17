@@ -19,6 +19,7 @@ namespace GorillaXS
 
         private string WebsocketUrl;
         private ConfigEntry<int> WebsocketPort;
+        public static ConfigEntry<bool> IgnoreHMD;
 
         public void Awake()
         {
@@ -31,6 +32,7 @@ namespace GorillaXS
         public void Initialize()
         {
             WebsocketPort = Config.Bind("Websocket", "Port", 42070, "Port used to communicate with XSOverlay's websocket server. You should not need to change this unless you use a different websocket port in your XSOverlay config.");
+            IgnoreHMD = Config.Bind("Misc", "IgnoreHMD", false, "Send notification events even if an HMD is not present. Can cause problems if you're not sure a websocket server is running.");
             WebsocketUrl = $"ws://127.0.0.1:{WebsocketPort.Value}/?client=gorillaxs";
 
             DefineWebSocket();
@@ -59,7 +61,7 @@ namespace GorillaXS
     {
         public static void Notify(XSONotificationObject notification)
         {
-            if (notification == null || !XRSettings.isDeviceActive) return;
+            if ((!XRSettings.isDeviceActive && !XSPlugin.IgnoreHMD.Value) || notification == null) return;
             
             if (notification.sourceApp.IsNullOrEmpty())
             {
